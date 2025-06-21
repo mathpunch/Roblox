@@ -69,7 +69,7 @@ local function Teleport(Character)
             local Height = math.clamp(Target.Y, 1, 512)
             SetCanTouchProperty(Character, false)
             HRP.Anchored = true
-            local Time = 0.05*Height
+            local Time = 0.075*Height
             TweenService:Create(HRP, TweenInfo.new(Time, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {CFrame = CFrame.new(Target)}):Play()
             task.delay(Time+0.1, function()
                 HRP.Anchored = false
