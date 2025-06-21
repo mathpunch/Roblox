@@ -18,7 +18,6 @@ end
 
 getgenv().SpawnPoints = true
 
-local Debris = game:GetService("Debris")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
