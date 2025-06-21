@@ -53,14 +53,14 @@ local function Teleport(Character)
 end
 
 for i, v in ipairs(workspace:GetDescendants()) do
-    if v.Name == "stop" or v.Name == "start" then
+    if v.Name == "stop" or v.Name == "start" and v:IsA("Part")  then
         AddSpawnPoint(v)
     end
 end
 
 workspace.DescendantAdded:Connect(function(Descendant)
     RunService.Heartbeat:Wait()
-    if Descendant.Name == "stop" or Descendant.Name == "start" then
+    if Descendant.Name == "stop" or Descendant.Name == "start" and Descendant:IsA("Part") then
         AddSpawnPoint(Descendant)
     end
 end)
