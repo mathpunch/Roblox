@@ -66,7 +66,7 @@ workspace.DescendantAdded:Connect(function(Descendant)
 end)
 
 LocalPlayer.CharacterAdded:Connect(function(Character)
-    local Ping = LocalPlayer:GetNetworkPing()
+    local Ping = LocalPlayer:GetNetworkPing()*2
     RunService.Heartbeat:Wait()
     print(task.wait(Ping))
     Teleport(Character)
