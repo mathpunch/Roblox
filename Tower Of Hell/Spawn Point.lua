@@ -68,7 +68,7 @@ local function Teleport(Character)
             local Height = math.clamp(Target.Y, 1, 512)
             SetCanTouchProperty(Character, false)
             HRP.Anchored = true
-            local Time = 0.075*Height
+            local Time = 0.125*Height
             TweenService:Create(HRP, TweenInfo.new(Time, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {CFrame = CFrame.new(Target)}):Play()
             task.delay(Time+0.1, function()
                 HRP.Anchored = false
@@ -93,7 +93,7 @@ end)
 LocalPlayer.CharacterAdded:Connect(function(Character)
     local Ping = LocalPlayer:GetNetworkPing()
     RunService.Heartbeat:Wait()
-    print(task.wait(Ping))
+    wait(Ping)
     Teleport(Character)
 end)
 
