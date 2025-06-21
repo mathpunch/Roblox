@@ -18,10 +18,12 @@ end
 
 getgenv().SpawnPoints = true
 
+local Debris = game:GetService("Debris")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
 local LocalPlayer = Players.LocalPlayer
-local PlaceId = {1962086868, 94971861814985, 3582763398}
+local PlaceId = {1962086868, 94971861814985, 3582763398, 5253186791}
 local CurrentSpawnPart = nil
 
 if table.find(PlaceId, game.PlaceId) then
@@ -34,7 +36,12 @@ local function AddSpawnPoint(Platform)
     Platform.Touched:Connect(function(Part)
         if Part.Parent.Name == LocalPlayer.Name and CurrentSpawnPart ~= Platform then
             if CurrentSpawnPart ~= nil then
-                if Platform.Position.Y > CurrentSpawnPart.Position.Y then
+                if CurrentSpawnPart:IsDescendantOf(game) == true then
+                    if Platform.Position.Y > CurrentSpawnPart.Position.Y then
+                        CurrentSpawnPart = Platform
+                        Log("|New Spawn Point|")
+                    end
+                else
                     CurrentSpawnPart = Platform
                     Log("|New Spawn Point|")
                 end
@@ -48,7 +55,7 @@ end
 
 local function SetCanTouchProperty(Character, Boolean)
     for i, v in ipairs(Character:GetChildren()) do
-        if v:IsA("Part") then
+        if v.Name == "Torso" or v.Name == "hitbox" then
             v.CanTouch = Boolean
         end
     end
@@ -56,14 +63,18 @@ end
 
 local function Teleport(Character)
     if CurrentSpawnPart ~= nil then
-        local HRP = Character:WaitForChild("HumanoidRootPart")
-        local Target = CurrentSpawnPart.Position + Vector3.new(0, 2, 0)
-        SetCanTouchProperty(Character, false)
-        for i = 1, 10 do
-            HRP.CFrame = CFrame.new((Target/10)*i)
-            task.wait(0.2)
+        if CurrentSpawnPart:IsDescendantOf(game) then
+            local HRP = Character:WaitForChild("HumanoidRootPart")
+            local Target = CurrentSpawnPart.Position + Vector3.new(0, 2, 0)
+            local Height = math.clamp(Target.Y, 1, 512)
+            SetCanTouchProperty(Character, false)
+            HRP.Anchored = true
+            local Time = 0.05*Height
+            TweenService:Create(HRP, TweenInfo.new(Time, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {CFrame = CFrame.new(Target)}):Play()
+            task.delay(Time+0.1, function()
+                HRP.Anchored = false
+            end)
         end
-        SetCanTouchProperty(Character, true)
     end
 end
 
