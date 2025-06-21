@@ -46,9 +46,24 @@ local function AddSpawnPoint(Platform)
     end)
 end
 
+local function SetCanTouchProperty(Character, Boolean)
+    for i, v in ipairs(Character:GetChildren()) do
+        if v:IsA("Part") then
+            v.CanTouch = Boolean
+        end
+    end
+end
+
 local function Teleport(Character)
     if CurrentSpawnPart ~= nil then
-        Character:WaitForChild("HumanoidRootPart").CFrame = CFrame.new(CurrentSpawnPart.Position + Vector3.new(0, 2, 0))
+        local HRP = Character:WaitForChild("HumanoidRootPart")
+        local Target = CurrentSpawnPart.Position + Vector3.new(0, 2, 0)
+        SetCanTouchProperty(Character, false)
+        for i = 1, 10 do
+            HRP.CFrame = CFrame.new((Target/10)*i)
+            task.wait(0.2)
+        end
+        SetCanTouchProperty(Character, true)
     end
 end
 
@@ -66,7 +81,7 @@ workspace.DescendantAdded:Connect(function(Descendant)
 end)
 
 LocalPlayer.CharacterAdded:Connect(function(Character)
-    local Ping = LocalPlayer:GetNetworkPing()*2
+    local Ping = LocalPlayer:GetNetworkPing()
     RunService.Heartbeat:Wait()
     print(task.wait(Ping))
     Teleport(Character)
