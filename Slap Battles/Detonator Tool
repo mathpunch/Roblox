@@ -1,0 +1,37 @@
+repeat
+    wait()
+until game:IsLoad()
+wait(0.3)
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayer = Players.LocalPlayer
+local RocketJump = ReplicatedStorage:WaitForChild("RocketJump")
+
+local DivebombTool = Instance.new("Tool")
+DivebombTool.Name = "Divebomb Tool"
+DivebombTool.RequiresHandle = false
+DivebombTool.CanBeDropped = false
+DivebombTool.ToolTip = "公開處決"
+DivebombTool.Parent = LocalPlayer.Backpack
+
+local function Nuke()
+    local Hit = LocalPlayer:GetMouse().Hit.Position
+    local args = {
+	    {
+	    	chargeAlpha = 0,
+		rocketJump = true
+	    }
+    }
+    RocketJump:InvokeServer(unpack(args))
+    local args = {
+	    {
+	    	explosionAlpha = 1,
+		    explosion = true,
+	    	position = vector.create(Hit.X, math.clamp(Hit.Y, -10, 80) , Hit.Z)
+	    }
+    }
+    RocketJump:InvokeServer(unpack(args))
+end
+
+DivebombTool.Activated:Connect(Nuke)
