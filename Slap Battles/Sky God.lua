@@ -76,7 +76,7 @@ Explosion.ToolTip = "Divebomb Required"
 Explosion.CanBeDropped = false
 Explosion.Parent = LocalPlayer.Backpack
 Explosion.Activated:Connect(function()
-    Equip("Divebomb")
+    Equip("hallowjack")
     local Hit = LocalPlayer:GetMouse().Hit.Position
     local args = {
 	    {
