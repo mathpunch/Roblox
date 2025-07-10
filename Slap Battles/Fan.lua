@@ -8,7 +8,7 @@ local Glove = game:GetService("Players").LocalPlayer.leaderstats.Glove
 local Remote = game:GetService("ReplicatedStorage"):WaitForChild("GeneralAbility")
 
 while task.wait(0.1) do
-    if Glove.Value == "Fan" then
+    if Glove.Value == "Run" then
         Remote:FireServer()
     end
     RunService.RenderStepped:Wait()
